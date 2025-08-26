@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TENT AI | 社内の知識、すべて一瞬で。</title>
+  <meta name="description" content="TENT AIは社内で使われるさまざまなビジネスツールと、ボタン1つで連携できる企業向けの生成AIチャットです。">
+  
+
+
+  <style>
+    :root{
+      --bg: #ffffff;
+      --text: #111827;     /* gray-800 */
+      --muted: #374151;     /* gray-500 */
+      --border:#e5e7eb;    /* gray-200 */
+      --card:#ffffff;
+      --accent:#0f172a;    /* slate-900 */
+      --accent-weak:#111827;/* gray-900 */
+      --soft:#f3f4f6;      /* gray-100 */
+      --soft-2:#f8fafc;    /* slate-50 */
+      --radius:16px;
+      --radius-sm:12px;
+      --container:1120px;
+      --space:clamp(24px, 4vw, 40px);
+      --h1: clamp(26px, 3.6vw, 42px);
+      --h2:clamp(22px, 3.4vw, 32px);
+      --h3:clamp(18px, 2.6vw, 22px);
+      --hero-h: clamp(240px, 45vw, 420px); /* ← 画像の高さ。お好みで調整OK */
+      --hero-radius: 0px;
+    }
+
+    /* base */
+    html{scroll-behavior:smooth;}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      -webkit-font-smoothing:antialiased; font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    }
+    img{max-width:100%; display:block;}
+    a{color:inherit; text-decoration:none}
+    .container{max-width:var(--container); margin:0 auto; padding:0 16px;}
+    .section{padding: clamp(48px, 8vw, 84px) 0;}
+    .muted{color:var(--muted)}
+    .lead{color:var(--muted); line-height:1.8}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:12px 20px; border-radius:14px; font-weight:600; border:1px solid transparent;
+      transition:.2s ease;
+    }
+    .btn-primary{ background:var(--accent-weak); color:#fff; }
+    .btn-primary:hover{ filter:brightness(1.05); transform:translateY(-1px); }
+    .btn-ghost{ border-color:var(--border); background:#fff;}
+    .btn-ghost:hover{ background:var(--soft); }
+
+    /* header */
+    .header{
+      position:sticky; top:0; z-index:50; backdrop-filter: blur(8px);
+      background: rgba(255,255,255,.9); border-bottom:1px solid var(--border);
+    }
+    .nav{display:none; gap:24px; font-size:14px}
+    .nav a:hover{color:#000}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    .logo{width:34px; height:34px; border-radius:12px; background:#111; color:#fff; display:grid; place-items:center}
+
+    @media (min-width: 640px){ .nav{display:flex} }
+
+    /* hero */
+    .hero{display:grid; gap:28px; align-items:center}
+    .hero img{
+        width: 100%;
+        height: var(--hero-h);
+        object-fit: cover;
+        border: none;
+        border-radius: var(--hero-radius);
+        box-shadow: none;
+    }
+    @media (min-width: 960px){
+      .hero{grid-template-columns:1.05fr .95fr}
+      .hero img{height: 360px;}
+    }
+    .eyebrow{font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); font-weight:700}
+    .hero h1{font-size:var(--h1); line-height:1.15; margin:.4em 0 .2em}
+    .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:20px}
+
+    /* features */
+    .features{background: var(--soft-2);}
+    .feature{display:grid; gap:24px; align-items:center}
+    .feature .num{font-size:56px; font-weight:900; color:#999; user-select:none; line-height:1}
+    .feature h3{font-size:var(--h3); margin:.4em 0 .2em}
+    .feature p{color:var(--muted)}
+    .feature-media{border:1px solid var(--border); border-radius:20px; overflow:hidden; box-shadow:0 6px 24px rgba(0,0,0,.05)}
+    .oval{width: 320px; height: 220px; background:#efefef; border-radius:50%;}
+    @media (min-width: 900px){
+      .feature{grid-template-columns:1fr 1fr}
+      .alt .text{order:2} .alt .media{order:1}
+    }
+
+    /* howto timeline */
+    .timeline{position:relative; display:grid; gap:12px}
+    .timeline::before{
+      content:""; position:absolute; left:10px; top:38.5px; bottom:38.5px; width:3px; background:#e6eaf5; border-radius:2px;
+    }
+    .step{position:relative; padding-left:36px}
+    .dot{position:absolute; left:4px; top:31px; width:15px; height:15px; background:#111; border-radius:999px}
+    .card{
+      background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; box-shadow: 0 4px 16px rgba(0,0,0,.04)
+    }
+    .card h4{margin:0 0 4px; font-size:15px}
+    .card p{margin:0; color:var(--muted); font-size:14px}
+
+    /* recommended cards */
+    .grid-3{display:grid; gap:18px}
+    .rcard{background:#fff; border:1px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,.05)}
+    .rcard img{height:160px; object-fit:cover}
+    .rcard .body{padding:16px}
+    @media (min-width: 720px){ .grid-3{grid-template-columns:repeat(2,1fr)} }
+    @media (min-width: 1024px){ .grid-3{grid-template-columns:repeat(3,1fr)} }
+
+    .recommend-title {
+        position: relative;
+        padding-left: 2.5em;  /* 左に余白を確保 */
+        font-size: 1.6em;
+        font-weight: bold;
+        color: #303E4F;       /* タイトル文字色は濃いグレー系 */
+    }
+
+    .recommend-title::before {
+        content: "✔";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #fff;       /* 背景は白 */
+        color: #00EA9C;               /* チェックマークの色 */
+        font-size: 1em;
+        font-weight: bold;
+        width: 1.6em;
+        height: 1.6em;
+        line-height: 1.6em;
+        text-align: center;
+        border-radius: 50%;           /* 丸くする */
+        border: 2px solid #00EA9C;    /* 枠線を#00EA9Cに */
+        box-shadow: none;             /* 影はなし */
+    }
+
+
+
+    /* pricing */
+    .pricing{display:grid; gap:20px; align-items:stretch}
+    .pricebox{background:#fff; border:1px solid var(--border); border-radius:18px; padding:22px; box-shadow:0 8px 28px rgba(0,0,0,.05)}
+    .price{display:flex; align-items:flex-end; gap:8px; margin:.2em 0 .4em}
+    .price .num{font-size:40px; font-weight:800}
+    .price .unit{color:var(--muted)}
+    .dash{border:2px dashed #d1d5db}
+    @media (min-width: 900px){ .pricing{grid-template-columns:1fr 1fr} }
+
+    /* logos */
+    .logos{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; place-items:center}
+    .logos img{height:80px; width:80px; object-fit:cover; border-radius:10px; filter:saturate(.9)}
+    @media (min-width: 640px){ .logos{grid-template-columns:repeat(6,1fr)} }
+
+    /* FAQ */
+    .faq{border:1px solid var(--border); border-radius:18px; overflow:hidden}
+    .faq details+details{border-top:1px solid var(--border)}
+    .faq summary{list-style:none; display:flex; align-items:center; justify-content:space-between; padding:16px 18px; cursor:pointer}
+    .faq summary::-webkit-details-marker{display:none}
+    .faq summary .chev{transition: transform .2s ease}
+    details[open] .chev{transform:rotate(180deg)}
+    .faq .inner{padding:0 18px 18px; color:var(--muted); font-size:14px}
+
+    /* footer */
+    .footer{border-top:1px solid var(--border); font-size:14px; color:var(--muted)}
+    .row{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap}
+
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container" style="padding:10px 16px;">
+      <div class="row">
+        <a class="brand" href="#">
+          <div class="logo">T</div><span>TENT AI</span>
+        </a>
+        <nav class="nav">
+          <a href="#features">特徴</a>
+          <a href="#howto">使い方</a>
+          <a href="#pricing">料金</a>
+          <a href="#integrations">連携</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <a class="btn btn-primary" href="#contact" style="padding:10px 14px; font-size:14px;">お問い合わせ</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="section">
+    <div class="container hero">
+      <div>
+        <div class="eyebrow">Enterprise Knowledge AI</div>
+        <h1>社内の知識、すべて一瞬で。</h1>
+        <p class="lead"><strong>TENT AI</strong>は社内で使われるさまざまなビジネスツールと、ボタン1つで連携できる企業向けの生成AIチャットです。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contact">お問い合わせ</a>
+        </div>
+      </div>
+      <div>
+        <img class="ref-icon" src="{% static 'lp/images/KV.png' %}" alt="KV">
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="section features">
+    <div class="container">
+      <h2 style="font-size:var(--h2); margin:0 0 18px; font-weight:800;">TENT AIの3つの特徴</h2>
+
+      <!-- 1 -->
+      <div class="feature" style="margin-top:28px;">
+        <div class="media feature-media">
+          <img class="ref-icon" src="{% static 'lp/images/point1.png' %}" alt="point1">
+        </div>
+        <div class="text">
+          <div class="num">1.</div>
+          <h3>社内情報のリアルタイム参照</h3>
+          <p>SlackやLINE WORKSで交わされたメッセージ、BoxやGoogleDriveにアップロードされたファイルなどをリアルタイムに取得</p>
+          <p>社内に存在する最新の情報全てにアクセスしてAIが回答します</p>
+        </div>
+      </div>
+
+      <!-- 2 (左右逆) -->
+      <div class="feature alt" style="margin-top:34px;">
+        <div class="media feature-media">
+          <img class="ref-icon" src="{% static 'lp/images/point2.jpg' %}" alt="point2">
+        </div>
+        <div class="text">
+          <div class="num">2.</div>
+          <h3>組織構成や職種を考慮した高精度AI</h3>
+          <p>質問者の所属組織、職種、レイヤーや勤続年数など、回答精度を上げるために、さまざまな情報を用います</p>
+          <p>例えば、直上長のメッセージは優先的に参照します。あるいは勤続年数の短い方には、社内用語を使わずに説明します</p>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="feature" style="margin-top:34px;">
+        <div class="media feature-media">
+          <img class="ref-icon" src="{% static 'lp/images/point3.jpg' %}" alt="point3">
+        </div>
+        <div class="text">
+          <div class="num">3.</div>
+          <h3>権限情報も自動取得</h3>
+          <p>経営陣しかアクセスできないドキュメント、プロジェクトメンバーしか入っていないトークルーム。これらの情報は、アクセス可能なユーザーからの質問時にしか参照しません。</p>
+          <p>権限は各ツールから自動取得するので、TENT AIでの設定は不要。権限変更も即時反映されます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to -->
+  <section id="howto" class="section">
+    <div class="container">
+      <h2 style="font-size:var(--h2); margin:0 0 8px; font-weight:800;">サービスの使い方</h2>
+      <p class="muted" style="margin:0 0 22px;">導入はシンプル。最短数分で社内横断のナレッジ検索を開始できます。</p>
+
+      <div class="timeline" style="margin-top:18px;">
+        <div class="step">
+          <div class="dot"></div>
+          <div class="card">
+            <h4>STEP 1　サービスの連携</h4>
+            <p>ボタン１つで各サービスとの連携を行うための認証を完了</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="dot"></div>
+          <div class="card">
+            <h4>STEP 2　初期データの取得</h4>
+            <p>ボタンタップで、各サービスに保存されているドキュメントやメッセージ、そしてフォルダやトークルームの権限情報を取得します</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="dot"></div>
+          <div class="card">
+            <h4>STEP 3　チャットAIで質問</h4>
+            <p>チャット画面で質問をすると、連携サービスから取得した情報を使ってAIが回答します。もちろん、信頼性を高める参照元の情報も併せて提示します</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="dot"></div>
+          <div class="card">
+            <h4>STEP 4　情報の自動更新</h4>
+            <p>新しくアップロードされたファイルや、変更された権限情報も自動取得。常に最新の情報で回答を生成します</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;">
+        <a class="btn btn-primary" href="#contact">お問い合わせ</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recommended -->
+  <section class="section" style="background:var(--soft-2);">
+    <div class="container">
+      <h2 style="font-size:var(--h2); margin:0 0 8px; font-weight:800;">どんな会社におすすめ？</h2>
+      <p class="muted" style="margin:0 0 18px;">情報が散在しがちなチームや、ナレッジ共有のスピードを上げたい企業に最適です。</p>
+
+      <div class="grid-3" style="margin-top:16px;">
+        <article class="rcard">
+          <div class="body">
+            <h3 style="margin:0 0 6px; font-size:18px;" class="recommend-title">日々の業務で複数のビジネスツールを使っている</h3>
+            <p class="muted" style="margin:0;">日々使っているすべてのビシネスツール上の情報を参照したい</p>
+          </div>
+        </article>
+        <article class="rcard">
+          <div class="body">
+            <h3 style="margin:0 0 6px; font-size:18px;" class="recommend-title">ドキュメントやチャットのやり取りが頻繁にある</h3>
+            <p class="muted" style="margin:0;">過去の仕様、日々の頻繁なやり取りの中で蓄積された情報に素早くアクセスしたい</p>
+          </div>
+        </article>
+        <article class="rcard">
+          <div class="body">
+            <h3 style="margin:0 0 6px; font-size:18px;" class="recommend-title">新しく入社するメンバーが多い</h3>
+            <p class="muted" style="margin:0;">引き継ぎの手間を減らし、迅速に戦力化したい</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="section">
+    <div class="container">
+      <h2 style="font-size:var(--h2); margin:0 0 12px; font-weight:800;">利用料金</h2>
+
+      <div class="pricing" style="margin-top:14px;">
+        <div class="pricebox">
+          <div class="muted" style="font-weight:600; font-size:14px;">スタンダード</div>
+          <div class="price">
+            <div class="num">¥7,000</div>
+            <div class="unit">/ ユーザー / 月〜</div>
+          </div>
+          <ul style="margin:10px 0 0; padding-left:18px; color:var(--text); line-height:1.8; font-size:14px">
+            <li>無制限のチャット質問、回答生成</li>
+            <li>連携サービス数に制限なし</li>
+            <li>過去5年分のデータを初期情報としてインプット可能</li>
+          </ul>
+        </div>
+
+        <div class="pricebox dash">
+          <div class="muted" style="font-weight:600; font-size:14px;">エンタープライズ</div>
+          <div class="price">
+            <div class="num">応相談</div>
+          </div>
+          <ul style="margin:10px 0 0; padding-left:18px; color:var(--text); line-height:1.8; font-size:14px">
+            <li>SSO認証</li>
+            <li>管理、アクセスログ</li>
+            <li>ドメイン制限</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Integrations -->
+  <section id="integrations" class="section" style="background:var(--soft-2);">
+    <div class="container">
+      <h2 style="font-size:var(--h2); margin:0 0 8px; font-weight:800;">連携可能なビジネスツール</h2>
+      <p class="muted" style="margin:0 0 18px;">接続可能なビジネスツールは随時拡大予定</p>
+      <div class="logos" style="margin-top:16px;">
+        <img src="{% static 'service/images/Slack.png' %}" alt="Slack">
+        <img src="{% static 'service/images/Box.png' %}" alt="Box">
+        <img src="{% static 'service/images/GoogleDrive.png' %}" alt="GoogleDrive">
+        <img src="{% static 'service/images/Gmail.png' %}" alt="Gmail">
+        <img src="{% static 'service/images/OneDrive.png' %}" alt="OneDrive">
+        <img src="{% static 'service/images/LINE WORKS.png' %}" alt="LINE WORKS">
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section">
+    <div class="container">
+      <h2 style="font-size:var(--h2); margin:0 0 12px; font-weight:800;">FAQ</h2>
+      <div class="faq" style="margin-top:14px;">
+        <details open>
+          <summary>
+            <span>セキュリティは大丈夫ですか？</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="inner">TENT AIは各サービスのアクセス権限と連動して動作するため、利用者が閲覧できる情報だけが検索結果に表示されます。データは暗号化され、社外に公開されることはありません。</div>
+        </details>
+        <details>
+          <summary>
+            <span>導入にはどれくらい時間がかかりますか？</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="inner">お問い合わせ後、企業アカウントが発行されたらすぐにご利用を開始いただけます。<br>各サービスの連携は数分程度で可能です。</div>
+        </details>
+        <details>
+          <summary>
+            <span>どのサービスと連携できますか？</span>
+            <span class="chev">▾</span>
+          </summary>
+          <div class="inner">以下のサービスと接続可能です。<br>ビジネスチャット：Slack・LINE Works<br>ファイル管理：GoogleDrive・OneDrive・Box<br>メール：Gmail</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section" style="background:var(--soft-2);">
+    <div class="container">
+      <h2 style="font-size:var(--h2); margin:0 0 12px; font-weight:800;">お問い合わせ</h2>
+      <form class="grid-3" style="grid-template-columns:1fr; margin-top:12px;">
+        <input type="text" placeholder="企業様名" style="padding:12px 14px; border:1px solid var(--border); border-radius:14px;">
+        <input type="text" placeholder="ご担当者様氏名" style="padding:12px 14px; border:1px solid var(--border); border-radius:14px;">
+        <select style="padding:12px 14px; border:1px solid var(--border); border-radius:14px; font-size:14px; color:var(--text);">
+        <option value="">従業員規模を選択</option>
+            <option value="lt10">10人未満</option>
+            <option value="11-50">11〜50人</option>
+            <option value="51-100">51〜100人</option>
+            <option value="101-300">101〜300人</option>
+            <option value="300-500">300〜500人</option>
+            <option value="500-1000">500〜1000人</option>
+            <option value="1001+">1001人〜</option>
+        </select>
+        <input type="email" placeholder="ご連絡先メールアドレス" style="padding:12px 14px; border:1px solid var(--border); border-radius:14px;">
+        <input type="text" placeholder="ホームページURL等" style="padding:12px 14px; border:1px solid var(--border); border-radius:14px;">
+        <textarea placeholder="その他ご相談など" rows="5" style="grid-column:1/-1; padding:12px 14px; border:1px solid var(--border); border-radius:14px;"></textarea>
+        <button type="button" class="btn btn-primary" style="grid-column:1/-1;">送信</button>
+      </form>
+      <p class="muted" style="margin-top:6px; font-size:12px;">※ GitHub Pages想定のダミーフォーム（送信処理なし）</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container" style="padding:28px 16px;">
+      <div class="row">
+        <p>© <span id="y"></span> TENT AI</p>
+        <div style="display:flex; gap:18px;">
+          <a href="#features">特徴</a>
+          <a href="#howto">使い方</a>
+          <a href="#pricing">料金</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
